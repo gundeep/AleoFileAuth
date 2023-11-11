@@ -20,7 +20,18 @@ function App() {
   function handleFileUpload(event) {
     const file = event.target.files[0];
     console.log(file);
-    // You can add code here to handle the file, like sending it to a server
+    // check when the uploaded file was last modified
+    const lastModified = new Date(file.lastModified);
+    const date1 = new Date();
+    const diffTime = Math.abs(date1 - lastModified);
+    // convert diffTime into minutes
+    const diffMinutes = Math.ceil(diffTime / (1000 * 60));
+    console.log(diffMinutes);
+    console.log(lastModified);
+    //
+
+    // how can i access the metadata of the file?
+    console.log(file.metadata);
   }
 
   async function execute() {
@@ -34,10 +45,6 @@ function App() {
 
     alert(JSON.stringify(result));
   }
-
-
-
-
 
   async function deploy() {
     setDeploying(true);
@@ -58,43 +65,26 @@ function App() {
       <div className="card">
         <input type="file" onChange={handleFileUpload} />
         <p>
-          <button onClick={generateAccount}>
-            {account
-              ? `Account is ${JSON.stringify(account)}`
-              : `Click to generate account`}
-          </button>
-        </p>
-        <p>
           <button disabled={executing} onClick={execute}>
             {executing
               ? `Executing...check console for details...`
-              : `Execute helloworld.aleo`}
+              : `Execute fileAuth.aleo`}
           </button>
         </p>
         <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
         </p>
       </div>
 
       {/* Advanced Section */}
       <div className="card">
-        <h2>Advanced Actions</h2>
-        <p>
-          Deployment on Aleo requires certain prerequisites like seeding your
-          wallet with credits and retrieving a fee record. Check README for more
-          details.
-        </p>
         <p>
           <button disabled={deploying} onClick={deploy}>
             {deploying
               ? `Deploying...check console for details...`
-              : `Deploy helloworld.aleo`}
+              : `Deploy fileAuth.aleo`}
           </button>
         </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Aleo and React logos to learn more
-      </p>
     </>
   );
 }
