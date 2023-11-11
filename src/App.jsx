@@ -17,6 +17,12 @@ function App() {
     setAccount(await key.to_string());
   };
 
+  function handleFileUpload(event) {
+    const file = event.target.files[0];
+    console.log(file);
+    // You can add code here to handle the file, like sending it to a server
+  }
+
   async function execute() {
     setExecuting(true);
     const result = await aleoWorker.localProgramExecution(
@@ -28,6 +34,10 @@ function App() {
 
     alert(JSON.stringify(result));
   }
+
+
+
+
 
   async function deploy() {
     setDeploying(true);
@@ -45,19 +55,8 @@ function App() {
 
   return (
     <>
-      <div>
-        <a href="https://aleo.org" target="_blank">
-          <img src={aleoLogo} className="logo" alt="Aleo logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Aleo + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
+        <input type="file" onChange={handleFileUpload} />
         <p>
           <button onClick={generateAccount}>
             {account
