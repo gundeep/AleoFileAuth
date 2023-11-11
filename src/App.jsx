@@ -5,19 +5,21 @@ import "./App.css";
 import helloworld_program from "../helloworld/build/main.aleo?raw";
 import { AleoWorker } from "./workers/AleoWorker.js";
 
+
 const aleoWorker = AleoWorker();
 function App() {
   const [count, setCount] = useState(0);
   const [account, setAccount] = useState(null);
   const [executing, setExecuting] = useState(false);
   const [deploying, setDeploying] = useState(false);
+  const [diffMinutes, setDiffMinutes] = useState(0);
 
   const generateAccount = async () => {
     const key = await aleoWorker.getPrivateKey();
     setAccount(await key.to_string());
   };
 
-  function handleFileUpload(event) {
+  async function handleFileUpload(event) {
     const file = event.target.files[0];
     console.log(file);
     // check when the uploaded file was last modified
@@ -25,21 +27,25 @@ function App() {
     const date1 = new Date();
     const diffTime = Math.abs(date1 - lastModified);
     // convert diffTime into minutes
-    const diffMinutes = Math.ceil(diffTime / (1000 * 60));
-    console.log(diffMinutes);
-    console.log(lastModified);
-    //
+    setDiffMinutes(Math.ceil(diffTime / (1000 * 60)));
+    
 
+    // check if the file was modified in the last 24 hours
+    if (diffMinutes > 1440) {
+      alert("File was not modified in the last 24 hours");
+    }
+
+    console.log(diffMinutes);
     // how can i access the metadata of the file?
-    console.log(file.metadata);
   }
 
   async function execute() {
     setExecuting(true);
+    console.log(diffMinutes.toString() + "u8");
     const result = await aleoWorker.localProgramExecution(
       helloworld_program,
       "main",
-      ["5u32", "5u32"],
+      ["5u32", useEffect(() => {diffMinutes},[diffMinutes]).toString() + "u8"],
     );
     setExecuting(false);
 

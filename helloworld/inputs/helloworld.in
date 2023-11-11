@@ -1,4 +1,4 @@
 // The program input for helloworld/src/main.leo
 [main]
-public a: u32 = 1u32;
+public a: address = aleo1t0uer3jgtsgmx5tq6x6f9ecu8tr57rzzfnc2dgmcqldceal0ls9qf6st7a;
 b: u16 = 10u16;
